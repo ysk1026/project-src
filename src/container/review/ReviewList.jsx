@@ -1,7 +1,7 @@
 import React , {useEffect, useState} from 'react'
 import axios from 'axios'
 import {Review} from '../../templates'
-
+import {Link} from 'react-router-dom'
 const ReviewList = () => {
     const [data, setData] = useState([])
     useEffect(() => {
@@ -9,6 +9,7 @@ const ReviewList = () => {
         .then(res=>{
             alert(`List Success`)
             setData(res.data)
+            // alert(data['rev_id'])
         })
         .catch(e=>{
             alert(`List Failure`)
@@ -16,7 +17,9 @@ const ReviewList = () => {
         })
 
     },[])
-    
+    const revid = () => {
+        
+    }
     return (<Review>
         <table>
             <h1>Review List</h1>
@@ -26,6 +29,7 @@ const ReviewList = () => {
                 <th>Movie</th>
                 <th>Title</th>
                 <th>Review</th>
+                <th>Edit</th>
                 {/* <th>Label</th> */}
             </tr>
             {data.map((i, index)=>(
@@ -35,6 +39,14 @@ const ReviewList = () => {
                     <td>{i.movie_id}</td>
                     <td>{i.title}</td>
                     <td>{i.content}</td>
+                    <td>
+                        <button onClick={revid}>
+                            <Link to="/edit-review">
+                                edit
+                            </Link>
+                        </button>
+                    </td>
+                    
                     {/* <td>{i.label}</td> */}
                 </tr>
             ))}
