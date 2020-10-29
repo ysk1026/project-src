@@ -16,17 +16,6 @@ const ReviewList = () => {
         })
 
     },[])
-
-    const search = e => {
-        alert(`Key Value: ${document.getElementById('search').value}`)
-        axios.get(`http://localhost:8080/api/user/${document.getElementById('search').value}`)
-        .then(res => { 
-            alert(`Success`)
-        })
-        .catch( e => { alert(`Search ...`) })
-    }
-
-
     
     return (<Review>
         <table>
