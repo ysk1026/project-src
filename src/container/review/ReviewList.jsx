@@ -22,6 +22,7 @@ const ReviewList = () => {
         // const btn = document.getElementById('btn')
         const revId = e.target.getAttribute('rev-id')
         // console.log(revId)
+        console.log(revId)
         localStorage.setItem("rev_id", revId);
         // const u_id = document.querySelector('button').firstChild.nodeValue
         // console.log(u_id)

@@ -7,26 +7,25 @@ const EditReview = () => {
     const [title, setTitle] = useState('')
     const [userId, setUserId] = useState('')
     const [content, setContent] = useState('')
-    const [movieId, setMovieId] = useState('')
+    // const [movieId, setMovieId] = useState('')
     const revId = localStorage.getItem("rev_id")
     
     useEffect(() => {
         alert("진입!")
-        axios.get(`http://localhost:8080/api/review`, {'rev_id' : revId})
+        axios.get(`http://localhost:8080/api/review${revId}`)
         .then(res => {
-
             setData(res.data)
-            alert(res.data[0]['title'])
+            // console.log(res.data)
         })
         .catch(e => {
             throw(e)
         })
-    }) 
+    },[]) 
     
     const modify = () => {
-        alert(`Title: ${title}, UserId: ${userId}, Content: ${content}, ItemId: ${movieId}`)
-        axios.post(`http://localhost:8080/api/review`,{'title':title,
-        'user_id': userId, 'content': content, 'movie_id': movieId})
+        // alert(`Title: ${title}, UserId: ${userId}, Content: ${content}, ItemId: ${movieId}`)
+        alert(`Title: ${title}, Content: ${content}`)
+        axios.put(`http://localhost:8080/api/review${revId}`,{'title':title, 'content': content})
         .then(res => {
             alert(`Update SUCCESS`)
         })
@@ -37,24 +36,70 @@ const EditReview = () => {
         )
 
     }
-    const options = [
-        {
-            label: "Select One",
-            value: "0",
-          },
-        {
-          label: "item",
-          value: "1",
-        },
-        {
-          label: "news",
-          value: "2",
-        },
-      ];
 
+    const del = () => {
+        alert(`Review ID: ${revId}`)
+        axios.post(`http://localhost:8080/api/delreview${revId}`, {'rev_id' : revId})
+        .then(res => {
+            alert('Delete SUCCESS')
+        })
+        .catch(err => {
+            throw(err)
+        })
+    }
+
+    const useConfirm = (message = null, onConfirm, onCancel) => {
+        if (!onConfirm || typeof onConfirm !== "function") {
+            return;
+        }
+        if (onCancel && typeof onCancel !== "function") {
+            return;
+        }
+    
+
+        const confirmAction = () => {
+            if (window.confirm(message)) {
+                onConfirm();
+            } else {
+                onCancel();
+            }
+        };
+        return confirmAction
+    }
+
+    const deleteConfirm = () => {
+        del()
+        alert("리뷰 삭제 완료")
+    }
+
+    const cancelConfirm = () => alert("리뷰 삭제 취소")
+
+    const confirmDelete = useConfirm(
+        "정말 삭제하시겠습니까?",
+        deleteConfirm,
+        cancelConfirm
+    ) 
     return (<Review>
-        <table>
-            <h1>{revId}</h1>
+        <div style={{textAlign: "center"}}>
+            {/* FIRST TABLE  */}
+            <table style={{display:"inline-block" , margin:"0 50em 0 0;"}}>
+            {/* <h1>{revId}</h1> */}
+                    <div>
+                    {/* {data.map((i, index)=>( */}
+                    {/* <tr key={index}> */}
+                    <h2>Current Review</h2>
+                    <td>{data['title']}</td>
+                    <td>{data['content']}</td>
+                    {/* <td>{i.label}</td> */}
+                {/* </tr> */}
+                
+            {/* ))} */}
+            </div>
+                </table>
+
+                {/* SECOND TABLE */}
+        <table style={{display:"inline-block", margin:'0 15px;'}}>
+            {/* <h1>{revId}</h1> */}
             <tr><td>
                 <div class="container" role="main">
                     <h2>Review Update Form</h2>
@@ -68,7 +113,7 @@ const EditReview = () => {
                                 placeholder="Input Title" 
                                 onChange={e=>setTitle(e.target.value)} />
                         </div>
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                             <label htmlFor="userid">Name</label>
                             <input 
                                 type="text" 
@@ -76,7 +121,7 @@ const EditReview = () => {
                                 name="userid" id="userid" 
                                 placeholder="Input Writer's Name" 
                                 onChange={e=>setUserId(e.target.value)}/>
-                        </div>
+                        </div> */}
                         <div class="mb-3">
                             <label htmlFor="content">Content</label>
                             <textarea 
@@ -85,7 +130,7 @@ const EditReview = () => {
                                 placeholder="Please Leave a Review." 
                                 onChange={e=>setContent(e.target.value)}></textarea>
                         </div>
-                        <div class="mb-3">
+                        {/* <div class="mb-3">
                             <label htmlFor="itemid">Movie</label>
                             <select value={movieId} 
                                     onChange={e=>setMovieId(e.target.value)}>
@@ -93,17 +138,23 @@ const EditReview = () => {
                                     <option value={o.value}>{o.label}</option>
                                 ))}
                             </select>
-                        </div>
+                        </div> */}
                     </form>
                     <div >
-                        <button type="button" class="btn btn-sm btn-primary" id="btnSave" onClick={modify}>Save</button>
-                        <button type="button" class="btn btn-sm btn-primary" id="btnSave" onClick={modify}>Delete</button>
+                        <button type="button">
+                            <Link to="review" class="btn btn-sm btn-primary" id="btnSave" onClick={modify}>Save</Link>
+                        </button>
+                        <button type="button">
+                            <Link to="review" class="btn btn-sm btn-primary" id="btnSave" onClick={confirmDelete}>Delete</Link>
+                        </button>
+                        {/* <button type="button" class="btn btn-sm btn-primary" id="btnSave" onClick={del}>Delete</button> */}
                         <button type="button" class="btn btn-sm btn-primary" id="btnList">
                             <Link to="review-list">Go Review List</Link>
                         </button>
                     </div>
                 </div></td></tr>
                 </table>
+                </div>
     </Review>)
 }
 export default EditReview
