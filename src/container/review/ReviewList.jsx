@@ -1,4 +1,4 @@
-import React , {useEffect, useState} from 'react'
+import React , {useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 import {Review} from '../../templates'
 import {Link} from 'react-router-dom'
@@ -7,9 +7,9 @@ const ReviewList = () => {
     useEffect(() => {
         axios.get(`http://localhost:8080/api/reviews`)
         .then(res=>{
-            alert(`List Success`)
+            // alert(`List Success`)
             setData(res.data)
-            // alert(data['rev_id'])
+            // console.log(res.data)
         })
         .catch(e=>{
             alert(`List Failure`)
@@ -17,8 +17,17 @@ const ReviewList = () => {
         })
 
     },[])
-    const revid = () => {
-        
+    const revid = e => {
+        // e.preventDefault()
+        // const btn = document.getElementById('btn')
+        const revId = e.target.getAttribute('rev-id')
+        // console.log(revId)
+        localStorage.setItem("rev_id", revId);
+        // const u_id = document.querySelector('button').firstChild.nodeValue
+        // console.log(u_id)
+
+        // axios.get(`http://localhost:8080/api/reviews`)
+        // console.log(data[2]['rev_id'])
     }
     return (<Review>
         <table>
@@ -40,9 +49,9 @@ const ReviewList = () => {
                     <td>{i.title}</td>
                     <td>{i.content}</td>
                     <td>
-                        <button onClick={revid}>
-                            <Link to="/edit-review">
-                                edit
+                        <button>
+                            <Link to="/edit-review" rev-id={i.rev_id} onClick={revid}>
+                            EDIT
                             </Link>
                         </button>
                     </td>

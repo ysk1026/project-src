@@ -1,12 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Review} from '../../templates'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 const EditReview = () => {
+    const [data, setData] = useState([])
     const [title, setTitle] = useState('')
     const [userId, setUserId] = useState('')
     const [content, setContent] = useState('')
     const [movieId, setMovieId] = useState('')
+    const revId = localStorage.getItem("rev_id")
+    
+    useEffect(() => {
+        alert("진입!")
+        axios.get(`http://localhost:8080/api/review`, {'rev_id' : revId})
+        .then(res => {
+
+            setData(res.data)
+            alert(res.data[0]['title'])
+        })
+        .catch(e => {
+            throw(e)
+        })
+    }) 
     
     const modify = () => {
         alert(`Title: ${title}, UserId: ${userId}, Content: ${content}, ItemId: ${movieId}`)
@@ -39,6 +54,7 @@ const EditReview = () => {
 
     return (<Review>
         <table>
+            <h1>{revId}</h1>
             <tr><td>
                 <div class="container" role="main">
                     <h2>Review Update Form</h2>
