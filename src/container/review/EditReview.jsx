@@ -5,7 +5,6 @@ import {Link} from 'react-router-dom'
 const EditReview = () => {
     const [data, setData] = useState([])
     const [title, setTitle] = useState('')
-    const [userId, setUserId] = useState('')
     const [content, setContent] = useState('')
     // const [movieId, setMovieId] = useState('')
     const revId = localStorage.getItem("rev_id")
@@ -15,7 +14,7 @@ const EditReview = () => {
         axios.get(`http://localhost:8080/api/review${revId}`)
         .then(res => {
             setData(res.data)
-            // console.log(res.data)
+            console.log(res.data)
         })
         .catch(e => {
             throw(e)
@@ -48,37 +47,37 @@ const EditReview = () => {
         })
     }
 
-    const useConfirm = (message = null, onConfirm, onCancel) => {
-        if (!onConfirm || typeof onConfirm !== "function") {
-            return;
-        }
-        if (onCancel && typeof onCancel !== "function") {
-            return;
-        }
+    // const useConfirm = (message = null, onConfirm, onCancel) => {
+    //     if (!onConfirm || typeof onConfirm !== "function") {
+    //         return;
+    //     }
+    //     if (onCancel && typeof onCancel !== "function") {
+    //         return;
+    //     }
     
 
-        const confirmAction = () => {
-            if (window.confirm(message)) {
-                onConfirm();
-            } else {
-                onCancel();
-            }
-        };
-        return confirmAction
-    }
+    //     const confirmAction = () => {
+    //         if (window.confirm(message)) {
+    //             onConfirm();
+    //         } else {
+    //             onCancel();
+    //         }
+    //     };
+    //     return confirmAction
+    // }
 
-    const deleteConfirm = () => {
-        del()
-        alert("리뷰 삭제 완료")
-    }
+    // const deleteConfirm = () => {
+    //     del()
+    //     alert("리뷰 삭제 완료")
+    // }
 
-    const cancelConfirm = () => alert("리뷰 삭제 취소")
+    // const cancelConfirm = () => alert("리뷰 삭제 취소")
 
-    const confirmDelete = useConfirm(
-        "정말 삭제하시겠습니까?",
-        deleteConfirm,
-        cancelConfirm
-    ) 
+    // const confirmDelete = useConfirm(
+    //     "정말 삭제하시겠습니까?",
+    //     deleteConfirm,
+    //     cancelConfirm
+    // ) 
     return (<Review>
         <div style={{textAlign: "center"}}>
             {/* FIRST TABLE  */}
@@ -145,7 +144,7 @@ const EditReview = () => {
                             <Link to="review" class="btn btn-sm btn-primary" id="btnSave" onClick={modify}>Save</Link>
                         </button>
                         <button type="button">
-                            <Link to="review" class="btn btn-sm btn-primary" id="btnSave" onClick={confirmDelete}>Delete</Link>
+                            <Link to="review" class="btn btn-sm btn-primary" id="btnSave" onClick={del}>Delete</Link>
                         </button>
                         {/* <button type="button" class="btn btn-sm btn-primary" id="btnSave" onClick={del}>Delete</button> */}
                         <button type="button" class="btn btn-sm btn-primary" id="btnList">
