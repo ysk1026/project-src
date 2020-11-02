@@ -1,7 +1,8 @@
-import React , {useEffect, useState, useRef} from 'react'
+import React , {useCallback, useEffect, useState, useRef} from 'react'
 import axios from 'axios'
 import {Review} from '../../templates'
 import {Link} from 'react-router-dom'
+import {context as c} from '../../context'
 const ReviewList = () => {
     const [data, setData] = useState([])
     useEffect(() => {
@@ -17,6 +18,27 @@ const ReviewList = () => {
         })
 
     },[])
+
+    const fetchSomeReview = useCallback(async e=> {
+        alert("진입")
+        const title = document.querySelector('#revTitle').value
+        alert(title)
+        try {
+            const req = {
+                method: c.get,
+                url: `${c.url}/api/searchreview${title}`,
+                // data: {params: title},
+                auth: c.auth
+
+            }
+            const res = await axios(req)
+            alert(res.rev_id)
+            setData(res.data)
+        } catch (error){
+            alert(`fetchSomeReviews failure ${error}`)
+        }
+    },[])
+
     const revid = e => {
         // e.preventDefault()
         // const btn = document.getElementById('btn')
@@ -32,6 +54,8 @@ const ReviewList = () => {
     }
     return (<Review>
         <table>
+            Search ID : <input type="text" id='revTitle'/> 
+            <button onClick={fetchSomeReview}>Search</button>
             <h1>Review List</h1>
             <tr>
                 <th>Review No.</th>

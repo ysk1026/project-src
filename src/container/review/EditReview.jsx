@@ -79,6 +79,7 @@ const EditReview = () => {
     //     cancelConfirm
     // ) 
     return (<Review>
+        
         <div style={{textAlign: "center"}}>
             {/* FIRST TABLE  */}
             <table style={{display:"inline-block" , margin:"0 50em 0 0;"}}>
